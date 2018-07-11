@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dto;
+package dao;
 
 /**
  *
  * @author ahihi
  */
-public class Admin {
+public class UsersDAO {
     
 }
