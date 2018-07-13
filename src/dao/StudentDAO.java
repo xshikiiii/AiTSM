@@ -5,48 +5,37 @@
  */
 package dao;
 
-import dto.Users;
+import dto.Student;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import utils.ConnectDB;
 
-
-
-
-
-
-
 /**
  *
  * @author ahihi
  */
-public class UsersDAO {
-    
-    List<Users> lU = null;
+public class StudentDAO {
+    List<Student> lS = null;
     Connection con = null;
 
-    public UsersDAO() {
-        lU = new ArrayList<>();
+    public StudentDAO() {
+        lS = new ArrayList();
         con = new ConnectDB().getCon();
     }
-    
-    public Users create(Users u){
+    public Student create (Student s){
         return null;
     }
-    public List<Users> readAll(){
-        return lU;
+    public List<Student> readAll(){
+        return lS;
     }
-    public Users searchByUsername(String username){
+    public List<Student> readById(String StudentID){
+        return lS;
+    }
+    public Student update(Student s){
         return null;
     }
-    public List<Users> update (){
-        return lU;
-    }
-    public boolean delete (){
-        return true;
-    }
-    public Users login(){
+    public Student delete(String StudentID){
         return null;
     }
     
