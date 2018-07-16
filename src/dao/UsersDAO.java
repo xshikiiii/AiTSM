@@ -31,6 +31,9 @@ public class UsersDAO {
     final private String SQL_USER_CHECK = "SELECT PASS FROM USERS WHERE USERNAME = ?";
     final private String SQL_USER_CREATE = "INSERT INTO USERS VALUES (?,?,?)";
     final private String SQL_USER_READALL = "SELECT * FROM USERS";
+    final private String SQL_USER_READBYUSERNAME = "SELECT FROM USERS WHERE USERNAME";
+    final private String SQL_USER_UPDATE = "UPDATE FROM USERS SET USERNAME = ?, PASSWORD = ?, ROLEID = ?";
+    final private String SQL_USER_DELETE = "DELETE FROM USERS WHERE USERNAME = ?";
     List<Users> lU = null;
     Connection con = null;
 
@@ -70,16 +73,65 @@ public class UsersDAO {
         }
         return lU;
     }
-    public Users searchByUsername(String username){
+    public Users readByUsername(String username){
+        lU = new ArrayList<>();
+        try {
+            PreparedStatement pr = con.prepareStatement(SQL_USER_READALL);
+            pr.setString(1, username);
+            ResultSet rs = pr.executeQuery();
+            if(rs!=null){
+                Users u = new Users();
+                u.setUsername(rs.getString(1));
+                u.setPassword(rs.getString(2));
+                u.setRoleid(rs.getInt(3));
+                return u;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
-    public List<Users> update (){
-        return lU;
+    public Users update (Users u){
+        try {
+            PreparedStatement pr = con.prepareStatement(SQL_USER_UPDATE);
+            pr.setString(1,u.getPassword());
+            pr.setString(2,u.getPassword());
+            pr.setInt(3,u.getRoleid());
+            pr.execute();
+            return u;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
-    public boolean delete (){
-        return true;
+    public boolean delete (String username){
+        try {
+            PreparedStatement pr = con.prepareStatement(SQL_USER_DELETE);
+            pr.setString(1,username);
+            pr.execute();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
-    public Users login(){
+    public Users login(Users u){
+        try {
+            PreparedStatement pr = con.prepareStatement(SQL_USER_CHECK);
+            pr.setString(1,u.getUsername());
+            ResultSet rs = pr.executeQuery();
+            if(rs!=null){
+                while(rs.next()){
+                    if(rs.getString(1).equals(u.getPassword())){
+                        return u;
+                    }
+                }
+            } else
+                return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
     
